@@ -21,10 +21,9 @@ class _DownloaderWidgetState extends State<DownloaderWidget> {
   int downloadedBytes = 0;
   Uint8List? uint8list;
   bool shortcutChecked = true;
-  bool installed = false;
+  bool downloaded = false;
 
-  Future<void> installFile() async {
-    print("indiriliyor...");
+  Future<void> donwloadFile() async {
     downloading = true;
     setState(() {});
     try {
@@ -39,26 +38,26 @@ class _DownloaderWidgetState extends State<DownloaderWidget> {
         File(widget.path)
           ..createSync(recursive: true)
           ..writeAsBytesSync(bytes);
-        print('Dosya çıkartıldı: ${widget.path}');
+        print('File Downloaded: ${widget.path}');
       } catch (e) {
-        print("Hata: $e");
+        print("Error: $e");
       }
     } catch (e) {
       log('$e');
     }
     downloading = false;
-    installed = true;
+    downloaded = true;
     setState(() {});
   }
 
   Future<String> checkDownload() async {
-    if (installed) {
-      return "installed";
+    if (downloaded) {
+      return "downloaded";
     } else {
       if (downloading) {
         return "downloading";
       } else {
-        installFile();
+        donwloadFile();
         return "download";
       }
     }
@@ -84,8 +83,8 @@ class _DownloaderWidgetState extends State<DownloaderWidget> {
               Text("${(downloadedBytes / 1048576).toStringAsFixed(2)} MB / ${(contentLength / 1048576).toStringAsFixed(2)} MB", style: TextStyle(color: Colors.black)),
             ],
           );
-        } else if (snapshot.data == "installed") {
-          return Text("İndirildi");
+        } else if (snapshot.data == "downloaded") {
+          return Text("Downloaded");
         } else {
           return Container();
         }
