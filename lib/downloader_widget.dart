@@ -21,8 +21,10 @@ class _DownloaderWidgetState extends State<DownloaderWidget> {
   int downloadedBytes = 0;
   Uint8List? uint8list;
   bool shortcutChecked = true;
+  bool installed = false;
 
   Future<void> installFile() async {
+    print("indiriliyor...");
     downloading = true;
     setState(() {});
     try {
@@ -45,32 +47,48 @@ class _DownloaderWidgetState extends State<DownloaderWidget> {
       log('$e');
     }
     downloading = false;
+    installed = true;
     setState(() {});
+  }
+
+  Future<String> checkDownload() async {
+    if (installed) {
+      return "installed";
+    } else {
+      if (downloading) {
+        return "downloading";
+      } else {
+        installFile();
+        return "download";
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: installFile(),
+      future: checkDownload(),
       builder: (_, snapshot) {
-        return downloading
-            ? Column(
-                children: [
-                  Text(" Downloading... ${dlProgress.toInt().toString()}%", style: TextStyle(color: Colors.black)),
-                  SizedBox(
-                    width: 400,
-                    child: LinearProgressIndicator(
-                      value: dlProgress / 100,
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.red,
-                    ),
-                  ),
-                  Text("${(downloadedBytes / 1048576).toStringAsFixed(2)} MB / ${(contentLength / 1048576).toStringAsFixed(2)} MB", style: TextStyle(color: Colors.black)),
-                ],
-              )
-            : const Column(
-                children: [],
-              );
+        if (snapshot.data == "downloading") {
+          return Column(
+            children: [
+              Text("Downloading... ${dlProgress.toInt().toString()}%", style: TextStyle(color: Colors.black)),
+              SizedBox(
+                width: 400,
+                child: LinearProgressIndicator(
+                  value: dlProgress / 100,
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.red,
+                ),
+              ),
+              Text("${(downloadedBytes / 1048576).toStringAsFixed(2)} MB / ${(contentLength / 1048576).toStringAsFixed(2)} MB", style: TextStyle(color: Colors.black)),
+            ],
+          );
+        } else if (snapshot.data == "installed") {
+          return Text("İndirildi");
+        } else {
+          return Container();
+        }
       },
     );
   }
