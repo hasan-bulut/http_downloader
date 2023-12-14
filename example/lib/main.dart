@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http_downloader/downloader_widget.dart';
+import 'package:http_downloader/http_downloader_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,9 +30,10 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DownloaderWidget(
+            HttpDownloaderWidget(
               url: "URL",
               path: "PATH",
+              fileName: "FILENAME",
             ),
           ],
         ),
