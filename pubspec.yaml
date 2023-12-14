@@ -1,6 +1,6 @@
 name: http_downloader
 description: "Simply download your files from the internet and save them to the desired location on your device."
-version: 0.0.1
+version: 0.0.2
 
 repository: https://github.com/hasan-bulut/http_downloader
 issue_tracker: https://github.com/hasan-bulut/http_downloader/issues

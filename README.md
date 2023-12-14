@@ -8,7 +8,7 @@ Download your files from the internet and see the progress while downloading. Ed
 
 1. Use `HttpDownloaderWidget()` where the download progress will be.
 3. HttpDownloaderWidget(<br>
-`url:` (Link of the file you want to download `ex. (https://google.com/example.png)`),<br>
+`url:` (Link of the file you want to download `ex. https://google.com/example.png`),<br>
 `path:` (Location to save the file `ex. C:\\Users\\YourName\\Desktop`),<br>
 `fileName:` (The name to save the file `ex. image.png`)<br>
 ):

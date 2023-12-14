@@ -5,10 +5,12 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
-typedef DownloadProgress = void Function(int total, int downloaded, double progress);
+typedef DownloadProgress = void Function(
+    int total, int downloaded, double progress);
 
 class HttpDownloader {
-  static Future<Uint8List> download(String url, DownloadProgress downloadProgress) async {
+  static Future<Uint8List> download(
+      String url, DownloadProgress downloadProgress) async {
     final compelter = Completer<Uint8List>();
     final client = http.Client();
     final request = http.Request('GET', Uri.parse(url));

@@ -20,7 +20,8 @@ class HttpDownloaderWidget extends StatefulWidget {
   final String path;
   final String fileName;
   final Widget Function(Future<void> Function() download)? startDownloadWidget;
-  final Widget Function(int progress, String downloadedMB, String contentMB)? downloadingWidget;
+  final Widget Function(int progress, String downloadedMB, String contentMB)?
+      downloadingWidget;
   final Widget? downloadedWidget;
   @override
   State<HttpDownloaderWidget> createState() => _HttpDownloaderWidgetState();
@@ -39,7 +40,8 @@ class _HttpDownloaderWidgetState extends State<HttpDownloaderWidget> {
     downloading = true;
     setState(() {});
     try {
-      final bytes = await HttpDownloader.download(widget.url, (total, downloaded, progress) {
+      final bytes = await HttpDownloader.download(widget.url,
+          (total, downloaded, progress) {
         contentLength = total;
         downloadedBytes = downloaded;
         dlProgress = progress;
@@ -50,9 +52,9 @@ class _HttpDownloaderWidgetState extends State<HttpDownloaderWidget> {
         File("${widget.path}\\${widget.fileName}")
           ..createSync(recursive: true)
           ..writeAsBytesSync(bytes);
-        print('File Downloaded: ${widget.path}\\${widget.fileName}');
+        log('File Downloaded: ${widget.path}\\${widget.fileName}');
       } catch (e) {
-        print("Error: $e");
+        log("Error: $e");
       }
     } catch (e) {
       log('$e');
@@ -83,7 +85,8 @@ class _HttpDownloaderWidgetState extends State<HttpDownloaderWidget> {
           return widget.downloadingWidget == null
               ? Column(
                   children: [
-                    Text("Downloading... ${dlProgress.toInt().toString()}%", style: const TextStyle(color: Colors.black)),
+                    Text("Downloading... ${dlProgress.toInt().toString()}%",
+                        style: const TextStyle(color: Colors.black)),
                     SizedBox(
                       width: 400,
                       child: LinearProgressIndicator(
@@ -92,10 +95,15 @@ class _HttpDownloaderWidgetState extends State<HttpDownloaderWidget> {
                         color: Colors.red,
                       ),
                     ),
-                    Text("${(downloadedBytes / 1048576).toStringAsFixed(2)} MB / ${(contentLength / 1048576).toStringAsFixed(2)} MB", style: const TextStyle(color: Colors.black)),
+                    Text(
+                        "${(downloadedBytes / 1048576).toStringAsFixed(2)} MB / ${(contentLength / 1048576).toStringAsFixed(2)} MB",
+                        style: const TextStyle(color: Colors.black)),
                   ],
                 )
-              : widget.downloadingWidget!(dlProgress.toInt(), (downloadedBytes / 1048576).toStringAsFixed(2), (contentLength / 1048576).toStringAsFixed(2));
+              : widget.downloadingWidget!(
+                  dlProgress.toInt(),
+                  (downloadedBytes / 1048576).toStringAsFixed(2),
+                  (contentLength / 1048576).toStringAsFixed(2));
         } else if (snapshot.data == "download") {
           return widget.startDownloadWidget == null
               ? ElevatedButton(
